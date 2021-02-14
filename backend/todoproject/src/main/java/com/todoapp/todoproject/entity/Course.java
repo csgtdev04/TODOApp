@@ -13,9 +13,8 @@ import javax.persistence.*;
 @Table(name = "courses_table")
 public class Course {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "course_generator")
-    @SequenceGenerator(initialValue = 1, name = "course_generator", sequenceName = "course_seq")
-    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "id", updatable = false, nullable = false)
     private int id;
 
     private String name;

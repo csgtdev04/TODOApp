@@ -1,5 +1,7 @@
 import { Component } from "react";
 import CourseDataService from "../service/CourseDataService";
+import Button from 'react-bootstrap/Button';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 class AccessCoursesComponent extends Component {
     constructor(props) {
@@ -9,7 +11,7 @@ class AccessCoursesComponent extends Component {
             name: null,
             description: null,
             status: null,
-            message: null
+            message: null,
         }
         this.refreshCourses = this.refreshCourses.bind(this);
         this.updateCourseClicked = this.updateCourseClicked.bind(this);
@@ -23,37 +25,27 @@ class AccessCoursesComponent extends Component {
     }
 
     refreshCourses() {
-        const {match: { params }} = this.props;
-        // CourseDataService.getAllItems()
-        //     .then(
-        //         response => {
-        //             console.log(response.data)
-        //             this.setState({ courses: response.data });
-        //         }
-        //     )
-
+        const { match: { params } } = this.props;
         CourseDataService.getCoursesByUsername(params.username)
             .then(
                 response => {
-                    if(response.data===undefined) {
+                    if (response.data === undefined) {
                         console.log("New User or Finished all TODO");
                     }
-                    //console.log(response.data)
                     this.setState({ courses: response.data });
                 }
             )
     }
 
-    updateCourseClicked(id) {
-        const {match: { params }} = this.props;
-        this.props.history.push(`/updateCourseByUsername/${params.username}/${id}`);
-        // const {match: { params }} = this.props;
-        // this.props.history.push(`/updateCourseByUsername/${params.username}`);
+    updateCourseClicked(id, name, description) {
+        const { match: { params } } = this.props;
+        this.props.history.push(`/updateCourseByUsername/${params.username}/${id}`,
+            { name: name, description: description }
+        )
     }
 
     addCourseClicked() {
-        //this.props.history.push(`/addCourse/-1`);
-        const {match: { params }} = this.props;
+        const { match: { params } } = this.props;
         this.props.history.push(`/addCourseByUsername/${params.username}`);
     }
 
@@ -71,12 +63,15 @@ class AccessCoursesComponent extends Component {
     }
 
     render() {
+        var courses_len = this.state.courses.length;
         return (
             <div className="container">
+                {
+                    <h4>You have {courses_len} TODOs!</h4>
+                }
                 <table className="table">
                     <thead>
                         <tr>
-                            {/* <th>Id</th> */}
                             <th>Name</th>
                             <th>Description</th>
                             <th>Status</th>
@@ -87,22 +82,25 @@ class AccessCoursesComponent extends Component {
                             this.state.courses.map(
                                 course =>
                                     <tr key={course.id}>
-                                        {/* <td>{course.id}</td> */}
                                         <td>{course.name}</td>
                                         <td>{course.description}</td>
                                         <td>{course.status}</td>
-                                        <td><button onClick={() => this.updateCourseClicked(course.id)}>Update</button></td>
-                                        <td><button onClick={() => this.deleteCourseClicked(course.id)}>Delete</button></td>
+                                        <td><Button variant="warning" size="sm" onClick={() => this.updateCourseClicked(course.id, course.name, course.description)}>Update</Button>                        </td>
+                                        <td><Button variant="primary" size="sm" onClick={() => this.deleteCourseClicked(course.id)}>Done</Button></td>
                                     </tr>
                             )
                         }
                     </tbody>
                 </table>
                 <div className="row">
-                    <button className="btn btn-success" onClick={this.addCourseClicked}>Add</button>
-                </div>
+                    <Button variant="primary" size="lg" onClick={this.addCourseClicked}>Add TODO</Button>
+                </div> <br />
                 <div className="row">
-                    <button onClick={this.goBackToLoginScreen}>Logout</button>
+                    <Button variant="secondary" size="sm" onClick={this.goBackToLoginScreen}>Logout</Button>
+                </div> <br />
+                {/* Can change the max count for progress bar */}
+                <div className="row">
+                    <ProgressBar size="lg" max="5" variant="success" now={courses_len} label={`${courses_len} left!`} />
                 </div>
             </div>
         );

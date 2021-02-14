@@ -1,5 +1,7 @@
 import { Component } from "react";
 import CourseDataService from "../service/CourseDataService";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 class AddCourseComponent extends Component {
     constructor(props) {
@@ -7,7 +9,7 @@ class AddCourseComponent extends Component {
         this.state = {
             name: '',
             description: '',
-            status: 'Not Done'
+            status: 'Unfinished'
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.goBack = this.goBack.bind(this);
@@ -19,7 +21,7 @@ class AddCourseComponent extends Component {
         console.log("Name: " + this.state.name);
         console.log("Description: " + this.state.description);
         console.log("Username: " + this.state.username);
-        const {match: { params }} = this.props;
+        const { match: { params } } = this.props;
         let myTodo = {
             name: this.state.name,
             description: this.state.description,
@@ -27,44 +29,54 @@ class AddCourseComponent extends Component {
             username: params.username,
         }
         CourseDataService.createItem(myTodo)
-        .then(
-            response => {
-                console.log(response.data)
-                //this.props.history.push('/courses')
-                this.props.history.push(`/listCourseByUsername/${myTodo.username}`);
-            }
-        );
+            .then(
+                response => {
+                    console.log(response.data)
+                    this.props.history.push(`/listCourseByUsername/${myTodo.username}`);
+                }
+            );
     }
 
     goBack() {
-        this.props.history.push("/courses")
+        const { match: { params } } = this.props;
+        let myTodo = {
+            name: this.state.name,
+            description: this.state.description,
+            status: this.state.status,
+            username: params.username,
+        }
+        this.props.history.push(`/listCourseByUsername/${myTodo.username}`);
     }
 
     handleNameChange(e) {
-        this.setState({name: e.target.value})
+        this.setState({ name: e.target.value })
     }
     handleDescriptionChange(e) {
-        this.setState({description: e.target.value})
+        this.setState({ description: e.target.value })
     }
 
     render() {
-        // <LoginComponent username={this.state.username}/>
         return (
             <div>
-                
-                <h3>Add TODO Here</h3>
-                <form>
-                    <label>
-                        TODO Name:
-                        <input type="text" name="name" placeholder="Name" value={this.state.name} onChange={this.handleNameChange} />
-                    </label> <br />
-                    <label>
-                        TODO Description:
-                        <input type="text" name="description" placeholder="Description" value={this.state.description} onChange={this.handleDescriptionChange} />
-                    </label> <br />
-                    <button type="button" onClick={this.handleSubmit}>Submit</button>
-                    <button onClick={this.goBack}>Go Back</button>
-                </form>
+                <h2>Add TODO Here</h2>
+                <Form>
+                    <Form.Group controlId="formBasicName">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" name="name" placeholder="Name" value={this.state.name} onChange={this.handleNameChange}/>
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicDescription">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control type="text" name="description" placeholder="Description" value={this.state.description} onChange={this.handleDescriptionChange}/>
+                    </Form.Group>
+
+                    <div className="row">
+                        <Button variant="success" onClick={this.handleSubmit} size="lg">Submit</Button>{' '}
+                    </div> <br/>
+                    <div className="row">
+                        <Button variant="info" onClick={this.goBack} size="sm">Nevermind...</Button>{' '}
+                    </div>
+                </Form>
             </div>
         );
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
+import java.util.ArrayList;
 
 @Service
 public class UserService {
@@ -36,6 +37,17 @@ public class UserService {
             return true;
         }
         return username_present && password_present;
+    }
+
+    public boolean findUserByUsername(String username) {
+        boolean username_present;
+        try {
+            username_present = userRepository.findTopByUsername(username) != null ? true : false;
+            System.out.println("Username present (U): " + username_present);
+        } catch(NonUniqueResultException nre) {
+            return true;
+        }
+        return username_present;
     }
 
     public void saveUser(User user) {

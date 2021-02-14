@@ -36,7 +36,13 @@ public class UserController {
     }
 
     @PostMapping("/createUser")
-    private void addUser(@RequestBody User user) {
+    private boolean addUser(@RequestBody User user) {
+        boolean user_exits = userService.findUserByUsername(user.getUsername());
+        if(user_exits) {
+            System.out.println("CANT CREATE USER!");
+            return false;
+        }
         userService.saveUser(user);
+        return true;
     }
 }
