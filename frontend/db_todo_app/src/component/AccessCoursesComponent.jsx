@@ -8,7 +8,7 @@ class AccessCoursesComponent extends Component {
         super(props);
         this.state = {
             courses: [],
-            name: null,
+            name: null, 
             description: null,
             status: null,
             message: null,
@@ -100,7 +100,7 @@ class AccessCoursesComponent extends Component {
                 </div> <br />
                 {/* Can change the max count for progress bar */}
                 <div className="row">
-                    <ProgressBar size="lg" max="5" variant="success" now={courses_len} label={`${courses_len} left!`} />
+                    <ProgressBar style={{ minWidth: 1100 }} size="lg" max="5" variant="success" now={courses_len} label={`${courses_len} left!`} />
                 </div>
             </div>
         );

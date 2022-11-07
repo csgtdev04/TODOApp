@@ -5,13 +5,17 @@ import AddCourseComponent from './AddCourseComponent';
 import UpdateCourseComponent from './UpdateCourseComponent'
 import LoginComponent from './LoginComponent'
 import CreateUserComponent from './CreateUserComponent'
+import Button from 'react-bootstrap/Button';
 
 class UrlController extends Component {
     render() {
         return (
             <>
                 <Router>
-                    <br/><h1><b><em>Get it done<sup> 2</sup></em> 😤</b></h1>
+                    <br /><h1><b><em>Get it done<sup> 2</sup></em> 😤</b></h1>
+                    {/* <div className="row">
+                        <Button variant="secondary" size="sm" onClick={AccessCoursesComponent.goBackToLoginScreen}>Logout</Button>
+                    </div> <br /> */}
                     <Switch>
                         <Route path="/" exact component={LoginComponent} />
                         <Route path="/login" exact component={LoginComponent} />

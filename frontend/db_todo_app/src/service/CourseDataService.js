@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const COURSE_API_URL = 'http://localhost:8080'
+// const COURSE_API_URL = 'http://localhost:8080'
+const COURSE_API_URL = 'http://todoappc11-env.eba-h3k9p9w3.us-east-2.elasticbeanstalk.com'
+
 
 class CourseDataService {
     //POST
